@@ -194,15 +194,20 @@ def send_motivation():
     bot = Bot("5962103538:AAFCM-wdWIARkhojaSOXyb78eo-c5rMsii0")
     count = 0
     for user in all_users:
-        rand_motivation = random.choice(motivation)
-        bot.send_message(
-            chat_id=int(user['key']),
-            text=rand_motivation['q'],
-        )
-        count += 1
-        if count == 30:
-            time.sleep(1)
-            count = 0
+        try:
+
+            rand_motivation = random.choice(motivation)
+            bot.send_message(
+                chat_id=int(user['key']),
+                text=rand_motivation['q'],
+            )
+            count += 1
+            if count == 30:
+                time.sleep(1)
+                count = 0
+
+        except:
+            pass
 
     return {"message": "ok"}
 
