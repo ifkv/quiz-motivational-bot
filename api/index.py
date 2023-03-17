@@ -30,10 +30,10 @@ For more info send /help
 
 btw am an open source bot, you can find the source code here https://github.com/chapimenge3/quiz-motivational-bot/
 
-Follow me on twitter @chapimenge3
-Follow me on github @chapimenge3
-Follow me on instagram @chapimenge3
-Follow me on LinkedIn https://www.linkedin.com/in/chapimenge/
+Follow me on twitter <a href="https://twitter.com/chapimenge3">@chapimenge3</a>
+Follow me on github <a href="https://github.com/chapimenge3">@chapimenge3</a>
+Follow me on instagram <a href="https://instagram.com/chapimenge3">@chapimenge3</a>
+Follow me on LinkedIn <a href="https://linkedin.com/in/chapimenge">@chapimenge</a>
 
 Read my blog https://blog.chapimenge.com/
 My website https://chapimenge.com/
@@ -127,7 +127,7 @@ def waiter_wrapper(func):
 def start(update: Update, context: CallbackContext):
     user = update.effective_chat or update.effective_user or update.message.from_user
     update.message.reply_html(WELCOME_MESSAGE.format(
-        user_id=user.id, user_name=user.first_name))
+        user_id=user.id, user_name=user.first_name), parse_mode='HTML')
     user = update.message.from_user.to_dict()
     user['key'] = str(user.get('id') or user.get('user_id'))
     if not quiz_user.get(user['key']):
