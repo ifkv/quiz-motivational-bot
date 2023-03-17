@@ -1,6 +1,6 @@
 import logging
 from telegram import Update, Poll, Bot
-from telegram.ext import Updater, CommandHandler, CallbackContext, PollHandler, PollAnswerHandler, Dispatcher
+from telegram.ext import Updater, CommandHandler, CallbackContext, PollHandler, PollAnswerHandler, Dispatcher, MessageHandler, Filters
 from deta import Deta
 import random
 from typing import Union
@@ -124,7 +124,7 @@ def start(update: Update, context: CallbackContext):
 
 @waiter_wrapper
 def start_quiz(update: Update, context: CallbackContext):
-    print('Quiz started')
+    logger.info('Quiz started')
     quiz = get_quiz()
     options = []
     options.append(quiz[0]['correctAnswer'])
@@ -150,16 +150,18 @@ def start_quiz(update: Update, context: CallbackContext):
 
 @waiter_wrapper
 def start_motivation(update: Update, context: CallbackContext):
-    print('Motivation started')
+    logger.info('Motivation started')
     motivation = get_motivational()
+    quote = random.choice(motivation)
     user = update.effective_user or update.message.from_user
     context.bot.send_message(
         chat_id=user.id,
-        text=random.choice(motivation)['q'],
+        text=quote['q'] + '\n\n' + quote['a'],
     )
     return 0
 
 
+@waiter_wrapper
 def help(update: Update, context: CallbackContext):
     update.message.reply_text(WELCOME_MESSAGE.format(
         user_id=update.message.from_user.id, user_name=update.message.from_user.first_name))
@@ -172,6 +174,7 @@ def register_dispatcher(dispatcher: Dispatcher):
     dispatcher.add_handler(CommandHandler("quiz", start_quiz))
     dispatcher.add_handler(CommandHandler("motivation", start_motivation))
     dispatcher.add_handler(CommandHandler("help", help))
+    dispatcher.add_handler(MessageHandler(Filters.text, start))
 
 
 def main():
