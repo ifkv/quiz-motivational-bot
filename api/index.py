@@ -127,7 +127,7 @@ def waiter_wrapper(func):
 def start(update: Update, context: CallbackContext):
     user = update.effective_chat or update.effective_user or update.message.from_user
     update.message.reply_html(WELCOME_MESSAGE.format(
-        user_id=user.id, user_name=user.first_name), parse_mode='HTML')
+        user_id=user.id, user_name=user.first_name))
     user = update.message.from_user.to_dict()
     user['key'] = str(user.get('id') or user.get('user_id'))
     if not quiz_user.get(user['key']):
@@ -182,8 +182,8 @@ def start_motivation(update: Update, context: CallbackContext):
 @waiter_wrapper
 def help(update: Update, context: CallbackContext):
     user = update.effective_chat or update.effective_user or update.message.from_user
-    update.message.reply_text(WELCOME_MESSAGE.format(
-        user_id=user.id, user_name=user.first_name), parse_mode='HTML')
+    update.message.reply_html(WELCOME_MESSAGE.format(
+        user_id=user.id, user_name=user.first_name))
 
 
 @waiter_wrapper
