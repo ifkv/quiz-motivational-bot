@@ -181,7 +181,7 @@ def webhook(our_update: TelegramWebhook):
     return {"message": "ok"}
 
 
-@app.get('api/cron')
+@app.get('/api/cron')
 def send_motivation():
     users = quiz_user.fetch()
     all_users = users.items
