@@ -154,7 +154,7 @@ def register_dispatcher(dispatcher: Dispatcher):
 
 
 def main():
-    updater = Updater("1789117801:AAG4_R5rK1Zis8sIfZlS1cj_zx1_Wa1MmZg")
+    updater = Updater("5962103538:AAFCM-wdWIARkhojaSOXyb78eo-c5rMsii0")
     dispatcher = updater.dispatcher
 
     # register dispatcher
@@ -191,7 +191,7 @@ def send_motivation():
 
     motivation = get_motivational()
 
-    bot = Bot("1789117801:AAG4_R5rK1Zis8sIfZlS1cj_zx1_Wa1MmZg")
+    bot = Bot("5962103538:AAFCM-wdWIARkhojaSOXyb78eo-c5rMsii0")
     count = 0
     for user in all_users:
         rand_motivation = random.choice(motivation)
