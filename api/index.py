@@ -28,6 +28,18 @@ By default, the bot will send you a quiz and a motivational quote every day at 8
 
 
 For more info send /help
+
+btw am an open source bot, you can find the source code here https://github.com/chapimenge3/quiz-motivational-bot/
+
+Follow me on twitter @chapimenge3
+Follow me on github @chapimenge3
+Follow me on instagram @chapimenge3
+Follow me on LinkedIn https://www.linkedin.com/in/chapimenge/
+
+Read my blog https://blog.chapimenge.com/
+My website https://chapimenge.com/
+
+Join My Telegram Channel https://t.me/codewizme
 '''
 
 QUIZ_URL = "https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple"
@@ -257,5 +269,5 @@ def send_motivation():
     return {"message": "ok"}
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
