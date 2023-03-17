@@ -97,7 +97,7 @@ class TelegramWebhook(BaseModel):
 def waiter_wrapper(func):
     def wrapper(update: Update, context: CallbackContext):
         try:
-            user = update.effective_user or update.message.from_user
+            user = update.effective_chat or update.effective_user or update.message.from_user
             msg = context.bot.send_message(
                 chat_id=user.id,
                 text="Please wait...",
@@ -114,8 +114,9 @@ def waiter_wrapper(func):
 
 @waiter_wrapper
 def start(update: Update, context: CallbackContext):
+    user = update.effective_chat or update.effective_user or update.message.from_user
     update.message.reply_html(WELCOME_MESSAGE.format(
-        user_id=update.message.from_user.id, user_name=update.message.from_user.first_name))
+        user_id=user.id, user_name=user.first_name))
     user = update.message.from_user.to_dict()
     user['key'] = str(user.get('id') or user.get('user_id'))
     if not quiz_user.get(user['key']):
@@ -126,14 +127,19 @@ def start(update: Update, context: CallbackContext):
 def start_quiz(update: Update, context: CallbackContext):
     logger.info('Quiz started')
     quiz = get_quiz()
+    print(quiz)
     options = []
     options.append(quiz[0]['correctAnswer'])
     for option in quiz[0]['incorrectAnswers']:
         options.append(option)
-
+    open_time = {
+        'hard': 90,
+        'medium': 60,
+        'easy': 45,
+    }
     random.shuffle(options)
     correct = options.index(quiz[0]['correctAnswer'])
-    user = update.effective_user or update.message.from_user
+    user = update.effective_chat or update.effective_user or update.message.from_user
     context.bot.send_poll(
         chat_id=user.id,
         question=quiz[0]['question'],
@@ -143,7 +149,8 @@ def start_quiz(update: Update, context: CallbackContext):
         correct_option_id=correct,
         protect_content=True,
         is_anonymous=False,
-        # TODO: add timer
+        explanation=f'Correct Answer: {quiz[0]["correctAnswer"]}',
+        open_period=open_time.get(quiz[0]['difficulty'], 60),
     )
     return 0
 
@@ -153,7 +160,7 @@ def start_motivation(update: Update, context: CallbackContext):
     logger.info('Motivation started')
     motivation = get_motivational()
     quote = random.choice(motivation)
-    user = update.effective_user or update.message.from_user
+    user = user = update.effective_chat or update.effective_user or update.message.from_user
     context.bot.send_message(
         chat_id=user.id,
         text=quote['q'] + '\n\n' + quote['a'],
@@ -163,8 +170,9 @@ def start_motivation(update: Update, context: CallbackContext):
 
 @waiter_wrapper
 def help(update: Update, context: CallbackContext):
+    user = update.effective_chat or update.effective_user or update.message.from_user
     update.message.reply_text(WELCOME_MESSAGE.format(
-        user_id=update.message.from_user.id, user_name=update.message.from_user.first_name), parse_mode='HTML')
+        user_id=user.id, user_name=user.first_name), parse_mode='HTML')
 
 
 @waiter_wrapper
@@ -248,5 +256,6 @@ def send_motivation():
 
     return {"message": "ok"}
 
-# if __name__ == '__main__':
-#     main()
+
+if __name__ == '__main__':
+    main()
