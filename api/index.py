@@ -167,6 +167,18 @@ def help(update: Update, context: CallbackContext):
         user_id=update.message.from_user.id, user_name=update.message.from_user.first_name))
 
 
+@waiter_wrapper
+def stats(update: Update, context: CallbackContext):
+    res = quiz_user.fetch()
+    all_items = res.items
+    while res.last:
+        res = quiz_user.fetch(last=res.last)
+        all_items += res.items
+
+    text += 'Total users: {}\n\n'.format(len(all_items))
+    update.message.reply_text(text)
+
+
 def register_dispatcher(dispatcher: Dispatcher):
     dispatcher.add_handler(PollAnswerHandler(start_quiz))
     dispatcher.add_handler(PollHandler(start_quiz))
@@ -174,6 +186,7 @@ def register_dispatcher(dispatcher: Dispatcher):
     dispatcher.add_handler(CommandHandler("quiz", start_quiz))
     dispatcher.add_handler(CommandHandler("motivation", start_motivation))
     dispatcher.add_handler(CommandHandler("help", help))
+    dispatcher.add_handler(CommandHandler("stats", stats))
     dispatcher.add_handler(MessageHandler(Filters.text, start))
 
 
