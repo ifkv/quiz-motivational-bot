@@ -9,9 +9,11 @@ import httpx
 import logging
 from fastapi import FastAPI
 import time
+import os
 
 logger = logging.getLogger(__name__)
 
+TOKEN = os.environ.get('TOKEN')
 app = FastAPI()
 deta = Deta("d011wxuu1l1_ZDghSFpyhLyrzvzE6AArrRSnnjNwHEeW")
 quiz_user = deta.Base("quiz_user")
@@ -154,7 +156,7 @@ def register_dispatcher(dispatcher: Dispatcher):
 
 
 def main():
-    updater = Updater("5962103538:AAFCM-wdWIARkhojaSOXyb78eo-c5rMsii0")
+    updater = Updater(TOKEN)
     dispatcher = updater.dispatcher
 
     # register dispatcher
@@ -171,7 +173,7 @@ def index():
 
 @app.post("/webhook")
 def webhook(our_update: TelegramWebhook):
-    bot = Bot("1789117801:AAG4_R5rK1Zis8sIfZlS1cj_zx1_Wa1MmZg")
+    bot = Bot(TOKEN)
     update = Update.de_json(our_update.to_json(), bot)
     dispatcher = Dispatcher(bot, None)
 
@@ -191,7 +193,7 @@ def send_motivation():
 
     motivation = get_motivational()
 
-    bot = Bot("5962103538:AAFCM-wdWIARkhojaSOXyb78eo-c5rMsii0")
+    bot = Bot(TOKEN)
     count = 0
     for user in all_users:
         try:
