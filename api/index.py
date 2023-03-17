@@ -147,6 +147,7 @@ def start_quiz(update: Update, context: CallbackContext):
     )
     return 0
 
+
 @waiter_wrapper
 def start_motivation(update: Update, context: CallbackContext):
     print('Motivation started')
@@ -158,12 +159,19 @@ def start_motivation(update: Update, context: CallbackContext):
     )
     return 0
 
+
+def help(update: Update, context: CallbackContext):
+    update.message.reply_text(WELCOME_MESSAGE.format(
+        user_id=update.message.from_user.id, user_name=update.message.from_user.first_name))
+
+
 def register_dispatcher(dispatcher: Dispatcher):
     dispatcher.add_handler(PollAnswerHandler(start_quiz))
     dispatcher.add_handler(PollHandler(start_quiz))
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("quiz", start_quiz))
     dispatcher.add_handler(CommandHandler("motivation", start_motivation))
+    dispatcher.add_handler(CommandHandler("help", help))
 
 
 def main():
