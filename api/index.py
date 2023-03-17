@@ -164,7 +164,7 @@ def start_motivation(update: Update, context: CallbackContext):
 @waiter_wrapper
 def help(update: Update, context: CallbackContext):
     update.message.reply_text(WELCOME_MESSAGE.format(
-        user_id=update.message.from_user.id, user_name=update.message.from_user.first_name))
+        user_id=update.message.from_user.id, user_name=update.message.from_user.first_name), parse_mode='HTML')
 
 
 @waiter_wrapper
