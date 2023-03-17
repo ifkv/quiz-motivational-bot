@@ -147,12 +147,23 @@ def start_quiz(update: Update, context: CallbackContext):
     )
     return 0
 
+@waiter_wrapper
+def start_motivation(update: Update, context: CallbackContext):
+    print('Motivation started')
+    motivation = get_motivational()
+    user = update.effective_user or update.message.from_user
+    context.bot.send_message(
+        chat_id=user.id,
+        text=random.choice(motivation)['q'],
+    )
+    return 0
 
 def register_dispatcher(dispatcher: Dispatcher):
     dispatcher.add_handler(PollAnswerHandler(start_quiz))
     dispatcher.add_handler(PollHandler(start_quiz))
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("quiz", start_quiz))
+    dispatcher.add_handler(CommandHandler("motivation", start_motivation))
 
 
 def main():
