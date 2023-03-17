@@ -175,7 +175,7 @@ def stats(update: Update, context: CallbackContext):
         res = quiz_user.fetch(last=res.last)
         all_items += res.items
 
-    text += 'Total users: {}\n\n'.format(len(all_items))
+    text = 'Total users: {}\n\n'.format(len(all_items))
     update.message.reply_text(text)
 
 
