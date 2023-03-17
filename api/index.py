@@ -2,7 +2,7 @@ import logging
 from telegram import Update, Poll, Bot
 from telegram.ext import Updater, CommandHandler, CallbackContext, PollHandler, PollAnswerHandler, Dispatcher
 from deta import Deta
-from helper import get_quiz, get_motivational, TelegramWebhook
+from api.helper import get_quiz, get_motivational, TelegramWebhook
 import random
 from fastapi import FastAPI
 
