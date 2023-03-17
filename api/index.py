@@ -24,8 +24,7 @@ To use this bot
     - send /quiz to get a random quiz
     - send /motivation to get a random motivational quote
 
-By default, the bot will send you a quiz and a motivational quote every day at 8:00 AM UTC.
-
+By default, the bot will send you a quiz and a motivational quote every day at 8:00 AM GMT+3.
 
 For more info send /help
 
