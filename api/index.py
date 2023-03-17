@@ -8,6 +8,7 @@ from pydantic import BaseModel
 import httpx
 import logging
 from fastapi import FastAPI
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +32,6 @@ QUIZ_URL = "https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type
 QUIZ_URL = 'https://the-trivia-api.com/api/questions?limit=1'
 
 MOTIVATIONAL_URL = 'https://zenquotes.io/api/quotes'
-
-
 
 
 def get_quiz():
@@ -59,6 +58,7 @@ def get_motivational():
         return None
     except Exception as e:
         logger.error(e)
+
 
 class TelegramWebhook(BaseModel):
     update_id: int
@@ -180,6 +180,31 @@ def webhook(our_update: TelegramWebhook):
     dispatcher.process_update(update)
     return {"message": "ok"}
 
+
+@app.get('api/cron')
+def send_motivation():
+    users = quiz_user.fetch()
+    all_users = users.items
+    while users.last:
+        users = quiz_user.fetch(last=users.last)
+        all_users += users.items
+
+    motivation = get_motivational()
+
+    bot = Bot("1789117801:AAG4_R5rK1Zis8sIfZlS1cj_zx1_Wa1MmZg")
+    count = 0
+    for user in all_users:
+        rand_motivation = random.choice(motivation)
+        bot.send_message(
+            chat_id=int(user['key']),
+            text=rand_motivation['q'],
+        )
+        count += 1
+        if count == 30:
+            time.sleep(1)
+            count = 0
+
+    return {"message": "ok"}
 
 # if __name__ == '__main__':
 #     main()
