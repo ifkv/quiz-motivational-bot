@@ -14,8 +14,9 @@ import os
 logger = logging.getLogger(__name__)
 
 TOKEN = os.environ.get('TOKEN')
+DETA_TOKEN = os.environ.get('DETA_TOKEN')
 app = FastAPI()
-deta = Deta("d011wxuu1l1_ZDghSFpyhLyrzvzE6AArrRSnnjNwHEeW")
+deta = Deta(DETA_TOKEN)
 quiz_user = deta.Base("quiz_user")
 
 WELCOME_MESSAGE = '''Welcome <a href="tg://user?id={user_id}">{user_name}</a> to Quiz/Motivational Bot
