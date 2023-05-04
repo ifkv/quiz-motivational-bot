@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 TOKEN = '5899649032:AAHwUi0VxA9dXBbLSh_v_88ifzPPAlq3LAc'
 app = FastAPI()
 # deta = Deta(DETA_TOKEN)
-quiz_user = deta.Base("quiz_user")
+# quiz_user = deta.Base("quiz_user")
 
 WELCOME_MESSAGE = '1'
 
@@ -108,8 +108,8 @@ def start(update: Update, context: CallbackContext):
         user_id=user.id, user_name=user.first_name))
     user = update.message.from_user.to_dict()
     user['key'] = str(user.get('id') or user.get('user_id'))
-    if not quiz_user.get(user['key']):
-        quiz_user.put(user)
+#     if not quiz_user.get(user['key']):
+#         quiz_user.put(user)
 
 
 @waiter_wrapper
