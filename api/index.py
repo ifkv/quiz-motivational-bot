@@ -19,8 +19,8 @@ app = FastAPI()
 
 WELCOME_MESSAGE = '1'
 
-QUIZ_URL = "https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple"
-QUIZ_URL = 'https://the-trivia-api.com/api/questions?limit=1'
+QUIZ_URL = "https://opentdb.com/api.php?amount=3&category=9&difficulty=easy&type=multiple"
+QUIZ_URL = 'https://the-trivia-api.com/api/questions?limit=3'
 
 MOTIVATIONAL_URL = 'https://zenquotes.io/api/quotes'
 
@@ -129,6 +129,7 @@ def start_quiz(update: Update, context: CallbackContext):
     random.shuffle(options)
     correct = options.index(quiz[0]['correctAnswer'])
     user = update.effective_chat or update.effective_user or update.message.from_user
+    context.bot.send_message(chat_id=user.id, text="q")
     context.bot.send_poll(
         chat_id=user.id,
         question=quiz[0]['question'],
