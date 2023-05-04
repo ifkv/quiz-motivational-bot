@@ -246,5 +246,5 @@ def webhook(our_update: TelegramWebhook):
 #     return {"message": "ok"}
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
