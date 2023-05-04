@@ -137,10 +137,10 @@ def start_quiz(update: Update, context: CallbackContext):
         allows_multiple_answers=False,
         options=options,
         correct_option_id=correct,
-        protect_content=True,
+        protect_content=False,
         is_anonymous=False,
         explanation=f'Correct Answer: {quiz[0]["correctAnswer"]}',
-        open_period=open_time.get(quiz[0]['difficulty'], 60),
+        open_period=open_time.get(quiz[0]['difficulty'], 15),
     )
     return 0
 
