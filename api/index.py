@@ -1,7 +1,6 @@
 import logging
 from telegram import Update, Poll, Bot
 from telegram.ext import Updater, CommandHandler, CallbackContext, PollHandler, PollAnswerHandler, Dispatcher, MessageHandler, Filters
-from deta import Deta
 import random
 from typing import Union
 from pydantic import BaseModel
@@ -13,34 +12,12 @@ import os
 
 logger = logging.getLogger(__name__)
 
-TOKEN = os.environ.get('TOKEN')
-DETA_TOKEN = os.environ.get('DETA_TOKEN')
+TOKEN = '5899649032:AAHwUi0VxA9dXBbLSh_v_88ifzPPAlq3LAc'
 app = FastAPI()
-deta = Deta(DETA_TOKEN)
+# deta = Deta(DETA_TOKEN)
 quiz_user = deta.Base("quiz_user")
 
-WELCOME_MESSAGE = '''Welcome <a href="tg://user?id={user_id}">{user_name}</a> to Quiz/Motivational Bot
-
-To use this bot 
-    - send /quiz to get a random quiz
-    - send /motivation to get a random motivational quote
-
-By default, the bot will send you a quiz and a motivational quote every day at 8:00 AM GMT+3.
-
-For more info send /help
-
-btw am an open source bot, you can find the source code here https://github.com/chapimenge3/quiz-motivational-bot/
-
-Follow me on twitter <a href="https://twitter.com/chapimenge3">@chapimenge3</a>
-Follow me on github <a href="https://github.com/chapimenge3">@chapimenge3</a>
-Follow me on instagram <a href="https://instagram.com/chapimenge3">@chapimenge3</a>
-Follow me on LinkedIn <a href="https://linkedin.com/in/chapimenge">@chapimenge</a>
-
-Read my blog https://blog.chapimenge.com/
-My website https://chapimenge.com/
-
-Join My Telegram Channel https://t.me/codewizme
-'''
+WELCOME_MESSAGE = '1'
 
 QUIZ_URL = "https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple"
 QUIZ_URL = 'https://the-trivia-api.com/api/questions?limit=1'
@@ -187,16 +164,16 @@ def help(update: Update, context: CallbackContext):
         user_id=user.id, user_name=user.first_name))
 
 
-@waiter_wrapper
-def stats(update: Update, context: CallbackContext):
-    res = quiz_user.fetch()
-    all_items = res.items
-    while res.last:
-        res = quiz_user.fetch(last=res.last)
-        all_items += res.items
+# @waiter_wrapper
+# def stats(update: Update, context: CallbackContext):
+#     res = quiz_user.fetch()
+#     all_items = res.items
+#     while res.last:
+#         res = quiz_user.fetch(last=res.last)
+#         all_items += res.items
 
-    text = 'Total users: {}\n\n'.format(len(all_items))
-    update.message.reply_text(text)
+#     text = 'Total users: {}\n\n'.format(len(all_items))
+#     update.message.reply_text(text)
 
 
 def register_dispatcher(dispatcher: Dispatcher):
@@ -206,7 +183,7 @@ def register_dispatcher(dispatcher: Dispatcher):
     dispatcher.add_handler(CommandHandler("quiz", start_quiz))
     dispatcher.add_handler(CommandHandler("motivation", start_motivation))
     dispatcher.add_handler(CommandHandler("help", help))
-    dispatcher.add_handler(CommandHandler("stats", stats))
+#     dispatcher.add_handler(CommandHandler("stats", stats))
     dispatcher.add_handler(MessageHandler(Filters.text, start))
 
 
@@ -238,35 +215,35 @@ def webhook(our_update: TelegramWebhook):
     return {"message": "ok"}
 
 
-@app.get('/api/cron')
-def send_motivation():
-    users = quiz_user.fetch()
-    all_users = users.items
-    while users.last:
-        users = quiz_user.fetch(last=users.last)
-        all_users += users.items
+# @app.get('/api/cron')
+# def send_motivation():
+#     users = quiz_user.fetch()
+#     all_users = users.items
+#     while users.last:
+#         users = quiz_user.fetch(last=users.last)
+#         all_users += users.items
 
-    motivation = get_motivational()
+#     motivation = get_motivational()
 
-    bot = Bot(TOKEN)
-    count = 0
-    for user in all_users:
-        try:
+#     bot = Bot(TOKEN)
+#     count = 0
+#     for user in all_users:
+#         try:
 
-            rand_motivation = random.choice(motivation)
-            bot.send_message(
-                chat_id=int(user['key']),
-                text=rand_motivation['q'],
-            )
-            count += 1
-            if count == 30:
-                time.sleep(1)
-                count = 0
+#             rand_motivation = random.choice(motivation)
+#             bot.send_message(
+#                 chat_id=int(user['key']),
+#                 text=rand_motivation['q'],
+#             )
+#             count += 1
+#             if count == 30:
+#                 time.sleep(1)
+#                 count = 0
 
-        except:
-            pass
+#         except:
+#             pass
 
-    return {"message": "ok"}
+#     return {"message": "ok"}
 
 
 # if __name__ == '__main__':
